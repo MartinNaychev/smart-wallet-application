@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final SubscriptionService subscriptionService;
     private final WalletService walletService;
-  private final NotificationService notificationService;
+    private final NotificationService notificationService;
 
     private final UserRegisteredEventProducer userRegisteredEventProducer;
 
@@ -52,13 +52,13 @@ public class UserService implements UserDetailsService {
                        PasswordEncoder passwordEncoder,
                        SubscriptionService subscriptionService,
                        WalletService walletService,
-NotificationService notificationService,
- UserRegisteredEventProducer userRegisteredEventProducer) {
+                       NotificationService notificationService,
+                       UserRegisteredEventProducer userRegisteredEventProducer) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.subscriptionService = subscriptionService;
         this.walletService = walletService;
-       this.notificationService = notificationService;
+        this.notificationService = notificationService;
 
         this.userRegisteredEventProducer = userRegisteredEventProducer;
     }
@@ -102,10 +102,10 @@ NotificationService notificationService,
         user.setEmail(userEditRequest.getEmail());
         user.setProfilePicture(userEditRequest.getProfilePicture());
 
-   if (!userEditRequest.getEmail().isBlank()){
+        if (!userEditRequest.getEmail().isBlank()) {
             notificationService.saveNotificationPreference(userId, true, userEditRequest.getEmail());
-        }else {
-            notificationService.saveNotificationPreference(userId, false,null);
+        } else {
+            notificationService.saveNotificationPreference(userId, false, null);
         }
 
 
@@ -132,6 +132,7 @@ NotificationService notificationService,
 
         return userRepository.findAll();
     }
+
     @VeryImportant
     public User getById(UUID id) {
         Optional<User> user = userRepository.findById(id);
@@ -141,7 +142,7 @@ NotificationService notificationService,
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    public void switchStatus(UUID userId){
+    public void switchStatus(UUID userId) {
         User user = getById(userId);
 
         user.setActive(!user.isActive());
@@ -149,11 +150,11 @@ NotificationService notificationService,
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    public void switchRole(UUID userId){
+    public void switchRole(UUID userId) {
         User user = getById(userId);
         if (user.getRole() == (UserRole.USER)) {
             user.setRole(UserRole.ADMIN);
-        }else {
+        } else {
             user.setRole(UserRole.USER);
         }
         userRepository.save(user);
