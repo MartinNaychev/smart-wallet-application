@@ -29,12 +29,14 @@ public class ExceptionAdvice {
         redirectAttributes.addFlashAttribute("usernameAlreadyExistMessage", message);
         return "redirect:/register";
     }
+
     @ExceptionHandler(NotificationServiceFeignCallException.class)
     public String handleNotificationServiceFeignCallException(RedirectAttributes redirectAttributes, NotificationServiceFeignCallException exception) {
         String message = exception.getMessage();
         redirectAttributes.addFlashAttribute("clearHistoryErrorMessage", message);
         return "redirect:/notification";
     }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({
             AccessException.class,
@@ -42,7 +44,7 @@ public class ExceptionAdvice {
             MethodArgumentTypeMismatchException.class,
             MissingRequestValueException.class
     })
-    public  ModelAndView handleNotFoundExceptions(Exception exception) {
+    public ModelAndView handleNotFoundExceptions(Exception exception) {
         return new ModelAndView("not-found");
     }
 
